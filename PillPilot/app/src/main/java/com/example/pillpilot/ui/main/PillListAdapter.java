@@ -18,7 +18,7 @@ public class PillListAdapter extends RecyclerView.Adapter<PillListAdapter.ViewHo
     public PillListAdapter(int layoutId) {
         pillItemLayout = layoutId;
     }
-    public void setillList(List<Pill> pills) {
+    public void setPillList(List<Pill> pills) {
         pillList = pills;
         notifyDataSetChanged();
     }

@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 
 import android.view.LayoutInflater;
@@ -20,6 +21,8 @@ import com.example.pillpilot.ui.main.PillListAdapter;
 
 import java.util.List;
 import java.util.Locale;
+import androidx.recyclerview.widget.RecyclerView;
+
 
 
 public class HomeFragment extends Fragment {
@@ -42,12 +45,12 @@ public class HomeFragment extends Fragment {
         binding = null;
     }
 
-    public void onViewCreated(@Nullable Bundle savedInstanceState) {
-        super.onViewCreated(savedInstanceState);
+    public void onViewCreated(View view,@Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view,savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         listenerSetup();
         observerSetup();
-        //recyclerSetup();
+        recyclerSetup();
     }
 
     /*@Override
@@ -67,10 +70,9 @@ public class HomeFragment extends Fragment {
                 if (!name.equals("") && !date.equals("") && !time.equals("")) {
                     Pill pill = new Pill(name, date, time);
                     mViewModel.insertPill(pill);
-
-
-
-                }//if
+                    clearFields();//miután elküldtük a Viewmodelnek töröljük a mezőket hogy ne ismétlődő rekordokat vigyünk be
+                }//if itt lehetne üzenni a felhasználónak egy TextView-val
+                //binding.messageTextView.setText("Hiányos információ");
             } //onclick
 
 
@@ -89,6 +91,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 mViewModel.deletePill(binding.pillName.getText().toString());
+                clearFields();
             }
         });//deletebutton
 
@@ -106,18 +109,25 @@ public class HomeFragment extends Fragment {
                 new Observer<List<Pill>>() {
                     @Override
                     public void onChanged(@Nullable final List<Pill> pills) {
-                        if (pill.size() > 0) { binding.pillId.setText(String.format(Locale.US, "%d", pills.get(0).getId()));
+                        if (pills.size() > 0) { //binding.messageTextView.setText(String.format(Locale.US, "%d", pills.get(0).getId()));
                             binding.pillName.setText(pills.get(0).getName());
                             binding.pillName.setText(String.format(Locale.US,
                                     pills.get(0).getName()));
-                        } else {
-                            binding.pillId.setText("No Match");
-                        }
+                        } //else {
+                           // binding.messageTextView.setText("Nincs találat");   messageTextView lehetne egy üzenetablak a felhasználónak
+                        //}
                     }
                 });
+    }//observersetup
+    private void recyclerSetup() {
+        adapter = new PillListAdapter(R.layout.pill_list_item);
+        binding.dataRecycler.setLayoutManager(
+                new LinearLayoutManager(getContext()));
+        binding.dataRecycler.setAdapter(adapter);
     }
 
-        private void clearFields() {
+
+    private void clearFields() {
         binding.pillName.setText("");
         binding.pillDate.setText("");
         binding.pillTime.setText("");

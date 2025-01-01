@@ -21,10 +21,10 @@ public class MainViewModel extends AndroidViewModel {
         allPills = repository.getAllPills();
         searchResults = repository.getSearchResults();
     }
-    MutableLiveData<List<Pill>> getSearchResults() {
+    public MutableLiveData<List<Pill>> getSearchResults() {
         return searchResults;
     }
-    LiveData<List<Pill>> getAllProducts() {
+    public LiveData<List<Pill>> getAllPills() {
         return allPills;
     }
     public void insertPill(Pill pill) {

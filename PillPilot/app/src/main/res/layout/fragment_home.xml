@@ -110,7 +110,7 @@
         app:layout_constraintTop_toBottomOf="@+id/pillTime" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/data_recycler"
+        android:id="@+id/dataRecycler"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
